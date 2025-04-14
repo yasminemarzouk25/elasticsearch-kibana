@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: grafana
+  namespace: grafana
+spec:
+  hard:
+    requests.cpu: < VALUE >
+    requests.memory: < VALUE >
+    limits.cpu: < VALUE >
+    limits.memory: < VALUE >

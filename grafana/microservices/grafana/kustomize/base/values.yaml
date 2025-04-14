@@ -1,0 +1,764 @@
+global:
+ 
+  imageRegistry: null
+
+  
+  imagePullSecrets: []
+
+rbac:
+  create: true
+ 
+  pspEnabled: false
+  pspUseAppArmor: false
+  namespaced: false
+  extraRoleRules: []
+ 
+  extraClusterRoleRules: []
+ 
+serviceAccount:
+  create: true
+  name:
+  nameTest:
+  ## ServiceAccount labels.
+  labels: {}
+
+  automountServiceAccountToken: false
+
+replicas: 1
+
+## Create a headless service for the deployment
+headlessService: false
+
+## Should the service account be auto mounted on the pod
+automountServiceAccountToken: true
+
+## Create HorizontalPodAutoscaler object for deployment type
+#
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPU: "60"
+  targetMemory: ""
+  behavior: {}
+
+
+podDisruptionBudget: {}
+
+deploymentStrategy:
+  type: RollingUpdate
+
+readinessProbe:
+  httpGet:
+    path: /api/health
+    port: 3000
+
+livenessProbe:
+  httpGet:
+    path: /api/health
+    port: 3000
+  initialDelaySeconds: 60
+  timeoutSeconds: 30
+  failureThreshold: 10
+
+
+
+image:
+  # -- The Docker registry
+  registry: docker.io
+  # -- Docker image repository
+  repository: grafana/grafana
+  # Overrides the Grafana image tag whose default is the chart appVersion
+  tag: ""
+  sha: ""
+  pullPolicy: IfNotPresent
+
+  pullSecrets: []
+  #   - myRegistrKeySecretName
+
+testFramework:
+  enabled: true
+ 
+  image:
+    # -- The Docker registry
+    registry: docker.io
+    repository: bats/bats
+    tag: "v1.4.1"
+  imagePullPolicy: IfNotPresent
+  securityContext: {}
+  containerSecurityContext: {}
+  resources: {}
+  
+dnsPolicy: ~
+dnsConfig: {}
+ 
+ 
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 472
+  runAsGroup: 472
+  fsGroup: 472
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  seccompProfile:
+    type: RuntimeDefault
+
+# Enable creating the grafana configmap
+createConfigmap: true
+
+
+extraConfigmapMounts: []
+
+
+extraEmptyDirMounts: []
+  # - name: provisioning-notifiers
+  #   mountPath: /etc/grafana/provisioning/notifiers
+
+
+# Apply extra labels to common labels.
+extraLabels: {}
+
+## Assign a PriorityClassName to pods if set
+# priorityClassName:
+
+downloadDashboardsImage:
+  # -- The Docker registry
+  registry: docker.io
+  repository: curlimages/curl
+  tag: 8.9.1
+  sha: ""
+  pullPolicy: IfNotPresent
+
+downloadDashboards:
+  env: {}
+  envFromSecret: ""
+  resources: {}
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    seccompProfile:
+      type: RuntimeDefault
+  envValueFrom: {}
+ 
+
+podPortName: grafana
+gossipPortName: gossip
+
+service:
+  enabled: true
+  type: ClusterIP
+  # Set the ip family policy to configure dual-stack see [Configure dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack/#services)
+  ipFamilyPolicy: ""
+  # Sets the families that should be supported and the order in which they should be applied to ClusterIP as well. Can be IPv4 and/or IPv6.
+  ipFamilies: []
+  loadBalancerIP: ""
+  loadBalancerClass: ""
+  loadBalancerSourceRanges: []
+  port: 80
+  targetPort: 3000
+    # targetPort: 4181 To be used with a proxy extraContainer
+  ## Service annotations. Can be templated.
+  annotations: {}
+  labels: {}
+  portName: service
+  # Adds the appProtocol field to the service. This allows to work with istio protocol selection. Ex: "http" or "tcp"
+  appProtocol: ""
+  sessionAffinity: ""
+
+serviceMonitor:
+  ## If true, a ServiceMonitor CR is created for a prometheus operator
+  ## https://github.com/coreos/prometheus-operator
+  ##
+  enabled: false
+  path: /metrics
+  #  namespace: monitoring  (defaults to use the namespace this chart is deployed to)
+  labels: {}
+  interval: 30s
+  scheme: http
+  tlsConfig: {}
+  scrapeTimeout: 30s
+  relabelings: []
+  metricRelabelings: []
+  basicAuth: {}
+  targetLabels: []
+
+extraExposePorts: []
+ # - name: keycloak
+ #   port: 8080
+ #   targetPort: 8080
+
+# overrides pod.spec.hostAliases in the grafana deployment's pods
+hostAliases: []
+  # - ip: "1.2.3.4"
+  #   hostnames:
+  #     - "my.host.com"
+
+ingress:
+  enabled: false
+ 
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  labels: {}
+  path: /
+
+  # pathType is only for k8s >= 1.1=
+  pathType: Prefix
+
+  hosts:
+    - chart-example.local
+  ## Extra paths to prepend to every host configuration. This is useful when working with annotation based services.
+  extraPaths: []
+
+
+
+  tls: []
+ 
+route:
+  main:
+    # -- Enables or disables the route
+    enabled: false
+
+    # -- Set the route apiVersion, e.g. gateway.networking.k8s.io/v1 or gateway.networking.k8s.io/v1alpha2
+    apiVersion: gateway.networking.k8s.io/v1
+    # -- Set the route kind
+    # Valid options are GRPCRoute, HTTPRoute, TCPRoute, TLSRoute, UDPRoute
+    kind: HTTPRoute
+
+    annotations: {}
+    labels: {}
+
+    hostnames: []
+    # - my-filter.example.com
+    parentRefs: []
+    # - name: acme-gw
+
+    matches:
+      - path:
+          type: PathPrefix
+          value: /
+
+    ## Filters define the filters that are applied to requests that match this rule.
+    filters: []
+
+    ## Additional custom rules that can be added to the route
+    additionalRules: []
+
+resources: {}
+#  limits:
+#    cpu: 100m
+#    memory: 128Mi
+#  requests:
+#    cpu: 100m
+#    memory: 128Mi
+
+## Node labels for pod assignment
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
+#
+nodeSelector: {}
+
+## Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+
+## Affinity for pod assignment (evaluated as template)
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
+affinity: {}
+
+## Topology Spread Constraints
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
+##
+topologySpreadConstraints: []
+
+## Additional init containers (evaluated as template)
+## ref: https://kubernetes.io/docs/concepts/workloads/pods/init-containers/
+##
+extraInitContainers: []
+
+## Enable an Specify container in extraContainers. This is meant to allow adding an authentication proxy to a grafana pod
+extraContainers: ""
+
+extraContainerVolumes: []
+
+persistence:
+  type: pvc
+  enabled: false
+  # storageClassName: default
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
+  # annotations: {}
+  finalizers:
+    - kubernetes.io/pvc-protection
+ 
+  extraPvcLabels: {}
+  disableWarning: false
+
+  ## If persistence is not enabled, this allows to mount the
+  ## local storage in-memory to improve performance
+  ##
+  inMemory:
+    enabled: false
+    
+  lookupVolumeName: true
+
+initChownData:
+  ## If false, data ownership will not be reset at startup
+  ## This allows the grafana-server to be run with an arbitrary user
+  ##
+  enabled: true
+
+  ## initChownData container image
+  ##
+  image:
+    # -- The Docker registry
+    registry: docker.io
+    repository: library/busybox
+    tag: "1.31.1"
+    sha: ""
+    pullPolicy: IfNotPresent
+
+ 
+  
+  resources: {}
+ 
+  securityContext:
+    runAsNonRoot: false
+    runAsUser: 0
+    seccompProfile:
+      type: RuntimeDefault
+    capabilities:
+      add:
+        - CHOWN
+
+# Administrator credentials when not using an existing secret (see below)
+adminUser: admin
+# adminPassword: strongpassword
+
+# Use an existing secret for the admin user.
+admin:
+  ## Name of the secret. Can be templated.
+  existingSecret: ""
+  userKey: admin-user
+  passwordKey: admin-password
+
+
+
+env: {}
+
+
+envValueFrom: {}
+
+envFromSecret: ""
+
+
+envRenderSecret: {}
+
+
+envFromSecrets: []
+
+envFromConfigMaps: []
+
+enableServiceLinks: true
+
+## Additional grafana server secret mounts
+# Defines additional mounts with secrets. Secrets must be manually created in the namespace.
+extraSecretMounts: []
+
+extraVolumeMounts: []
+ 
+extraVolumes: []
+ 
+lifecycleHooks: {}
+ 
+plugins: []
+ 
+datasources: {}
+
+alerting: {}
+
+notifiers: {}
+
+##
+dashboardProviders: {}
+
+##
+dashboards: {}
+
+dashboardsConfigMaps: {}
+
+##
+grafana.ini:
+  paths:
+    data: /var/lib/grafana/
+    logs: /var/log/grafana
+    plugins: /var/lib/grafana/plugins
+    provisioning: /etc/grafana/provisioning
+  analytics:
+    check_for_updates: true
+  log:
+    mode: console
+  grafana_net:
+    url: https://grafana.net
+  server:
+    domain: "{{ if (and .Values.ingress.enabled .Values.ingress.hosts) }}{{ tpl (.Values.ingress.hosts | first) . }}{{ else }}''{{ end }}"
+
+ldap:
+  enabled: false
+  # `existingSecret` is a reference to an existing secret containing the ldap configuration
+  # for Grafana in a key `ldap-toml`.
+  existingSecret: ""
+  # `config` is the content of `ldap.toml` that will be stored in the created secret
+  config: ""
+
+shareProcessNamespace: false
+
+
+smtp:
+  # `existingSecret` is a reference to an existing secret containing the smtp configuration
+  # for Grafana.
+  existingSecret: ""
+  userKey: "user"
+  passwordKey: "password"
+
+## Sidecars that collect the configmaps with specified label and stores the included files them into the respective folders
+## Requires at least Grafana 5 to work and can't be used together with parameters dashboardProviders, datasources and dashboards
+sidecar:
+  image:
+    # -- The Docker registry
+    registry: quay.io
+    repository: kiwigrid/k8s-sidecar
+    tag: 1.30.0
+    sha: ""
+  imagePullPolicy: IfNotPresent
+  resources: {}
+
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    seccompProfile:
+      type: RuntimeDefault
+  
+  enableUniqueFilenames: false
+  readinessProbe: {}
+  livenessProbe: {}
+  # Log level default for all sidecars. Can be one of: DEBUG, INFO, WARN, ERROR, CRITICAL. Defaults to INFO
+  # logLevel: INFO
+  alerts:
+    enabled: false
+    # Additional environment variables for the alerts sidecar
+    env: {}
+   
+    label: grafana_alert
+    # value of label that the configmaps with alert are set to (can be templated)
+    labelValue: ""
+   
+    searchNamespace: null
+    # Method to use to detect ConfigMap changes. With WATCH the sidecar will do a WATCH requests, with SLEEP it will list all ConfigMaps, then sleep for 60 seconds.
+    watchMethod: WATCH
+    # search in configmap, secret or both
+    resource: both
+  
+    reloadURL: "http://localhost:3000/api/admin/provisioning/alerting/reload"
+    # Absolute path to shell script to execute after a alert got reloaded
+    script: null
+    skipReload: false
+    # This is needed if skipReload is true, to load any alerts defined at startup time.
+    # Deploy the alert sidecar as an initContainer.
+    initAlerts: false
+    # Additional alerts sidecar volume mounts
+    extraMounts: []
+    # Sets the size limit of the alert sidecar emptyDir volume
+    sizeLimit: {}
+  dashboards:
+    enabled: false
+    # Additional environment variables for the dashboards sidecar
+    env: {}
+   
+    envValueFrom: {}
+  
+    # label that the configmaps with dashboards are marked with (can be templated)
+    label: grafana_dashboard
+    # value of label that the configmaps with dashboards are set to (can be templated)
+    labelValue: ""
+    # Log level. Can be one of: DEBUG, INFO, WARN, ERROR, CRITICAL.
+    # logLevel: INFO
+    # folder in the pod that should hold the collected dashboards (unless `defaultFolderName` is set)
+    folder: /tmp/dashboards
+    # The default folder name, it will create a subfolder under the `folder` and put dashboards in there instead
+    defaultFolderName: null
+    # Namespaces list. If specified, the sidecar will search for config-maps/secrets inside these namespaces.
+    # Otherwise the namespace in which the sidecar is running will be used.
+    # It's also possible to specify ALL to search in all namespaces.
+    searchNamespace: null
+    # Method to use to detect ConfigMap changes. With WATCH the sidecar will do a WATCH requests, with SLEEP it will list all ConfigMaps, then sleep for 60 seconds.
+    watchMethod: WATCH
+    # search in configmap, secret or both
+    resource: both
+    # If specified, the sidecar will look for annotation with this name to create folder and put graph here.
+    # You can use this parameter together with `provider.foldersFromFilesStructure`to annotate configmaps and create folder structure.
+    folderAnnotation: null
+  
+    reloadURL: "http://localhost:3000/api/admin/provisioning/dashboards/reload"
+    # Absolute path to shell script to execute after a configmap got reloaded
+    script: null
+    skipReload: false
+  
+    provider:
+      # name of the provider, should be unique
+      name: sidecarProvider
+      # orgid as configured in grafana
+      orgid: 1
+      # folder in which the dashboards should be imported in grafana
+      folder: ''
+      # <string> folder UID. will be automatically generated if not specified
+      folderUid: ''
+      # type of the provider
+      type: file
+      # disableDelete to activate a import-only behaviour
+      disableDelete: false
+      # allow updating provisioned dashboards from the UI
+      allowUiUpdates: false
+      # allow Grafana to replicate dashboard structure from filesystem
+      foldersFromFilesStructure: false
+    # Additional dashboards sidecar volume mounts
+    extraMounts: []
+    # Sets the size limit of the dashboard sidecar emptyDir volume
+    sizeLimit: {}
+  datasources:
+    enabled: false
+    # Additional environment variables for the datasourcessidecar
+    env: {}
+  
+    envValueFrom: {}
+   
+    label: grafana_datasource
+    
+    labelValue: ""
+   
+    searchNamespace: null
+   
+    watchMethod: WATCH
+    
+    resource: both
+   
+    reloadURL: "http://localhost:3000/api/admin/provisioning/datasources/reload"
+    
+    script: null
+    skipReload: false
+   
+    initDatasources: false
+    
+    extraMounts: []
+    
+    sizeLimit: {}
+  plugins:
+    enabled: false
+  
+    env: {}
+    
+    label: grafana_plugin
+   
+    labelValue: ""
+    
+    searchNamespace: null
+    
+    watchMethod: WATCH
+   
+    resource: both
+    
+    reloadURL: "http://localhost:3000/api/admin/provisioning/plugins/reload"
+    
+    script: null
+    skipReload: false
+    
+    initPlugins: false
+   
+    extraMounts: []
+    
+    sizeLimit: {}
+  notifiers:
+    enabled: false
+    
+    env: {}
+   
+    label: grafana_notifier
+   
+    labelValue: ""
+    
+    searchNamespace: null
+    
+    watchMethod: WATCH
+    
+    resource: both
+   
+    reloadURL: "http://localhost:3000/api/admin/provisioning/notifications/reload"
+    
+    script: null
+    skipReload: false
+   
+    initNotifiers: false
+    
+    extraMounts: []
+    
+    sizeLimit: {}
+
+
+namespaceOverride: ""
+
+
+revisionHistoryLimit: 10
+
+
+imageRenderer:
+  deploymentStrategy: {}
+ 
+  enabled: false
+  replicas: 1
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 5
+    targetCPU: "60"
+    targetMemory: ""
+    behavior: {}
+  
+  serverURL: ""
+  
+  renderingCallbackURL: ""
+  image:
+   
+    registry: docker.io
+   
+    repository: grafana/grafana-image-renderer
+  
+    tag: latest
+    
+    sha: ""
+   
+    pullPolicy: Always
+ 
+  env:
+    HTTP_HOST: "0.0.0.0"
+    
+    XDG_CONFIG_HOME: /tmp/.chromium
+    XDG_CACHE_HOME: /tmp/.chromium
+   
+  envValueFrom: {}
+   
+  serviceAccountName: ""
+  automountServiceAccountToken: false
+  
+  securityContext: {}
+  
+  containerSecurityContext:
+    seccompProfile:
+      type: RuntimeDefault
+    capabilities:
+      drop: ['ALL']
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+  
+  podAnnotations: {}
+  
+  hostAliases: []
+  
+  priorityClassName: ''
+  service:
+    
+    enabled: true
+   
+    portName: 'http'
+   
+    port: 8081
+    targetPort: 8081
+    
+    appProtocol: ""
+  serviceMonitor:
+  
+    enabled: false
+    path: /metrics
+   
+    labels: {}
+    interval: 1m
+    scheme: http
+    tlsConfig: {}
+    scrapeTimeout: 30s
+    relabelings: []
+    
+    targetLabels: []
+      
+  grafanaProtocol: http
+ 
+  grafanaSubPath: ""
+  
+  podPortName: http
+ 
+  revisionHistoryLimit: 10
+  networkPolicy:
+    
+    limitIngress: true
+    
+    limitEgress: false
+    
+    extraIngressSelectors: []
+  resources: {}
+
+  nodeSelector: {}
+
+
+  tolerations: []
+
+  
+  affinity: {}
+
+ 
+  extraConfigmapMounts: []
+
+  
+  extraSecretMounts: []
+
+  
+  extraVolumeMounts: []
+
+  
+  extraVolumes: []
+
+networkPolicy:
+  
+  enabled: false
+  
+  ingress: true
+ 
+  allowExternal: true
+ 
+  explicitNamespacesSelector: {}
+  
+  egress:
+   
+    enabled: false
+    
+    blockDNSResolution: false
+    
+    ports: []
+    
+    to: []
+    
+enableKubeBackwardCompatibility: false
+useStatefulSet: false
+
+
+extraObjects: []
+
+assertNoLeakedSecrets: true
