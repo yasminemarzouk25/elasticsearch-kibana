@@ -1,4 +1,3 @@
-
 - op: replace
   path: /spec/template/spec/containers/0/image
   value: docker.elastic.co/kibana/kibana:7.12.0
@@ -13,15 +12,14 @@
       valueFrom:
         configMapKeyRef:
           name: kibana-config
-          key: elasticsearch_username
+          key: elasticsearch_username  
     - name: ELASTICSEARCH_PASSWORD
       valueFrom:
         configMapKeyRef:
           name: kibana-config
-          key: elasticsearch_password
+          key: elasticsearch_password  
 - op: add
   path: /spec/template/spec/containers/0/envFrom
   value:
     - configMapRef:
         name: kibana-config
-
