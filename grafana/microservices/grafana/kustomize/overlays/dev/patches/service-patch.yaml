@@ -1,0 +1,21 @@
+
+- op: replace
+  path: /metadata/name
+  value: grafana
+
+
+- op: replace
+  path: /metadata/labels
+  value:
+    app: grafana
+
+- op: add
+  path: /metadata/annotations
+  value:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '3000'
+
+- op: replace
+  path: /spec/selector
+  value:
+    app: grafana

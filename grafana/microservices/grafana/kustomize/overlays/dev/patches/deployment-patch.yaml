@@ -1,0 +1,47 @@
+- op: add
+  path: /spec/template/spec/containers/0/resources
+  value:
+    requests:
+      cpu: "500m"
+      memory: "500M"
+    limits:
+      cpu: "1000m"
+      memory: "1Gi"
+
+- op: replace
+  path: /spec/template/spec/containers/0/image
+  value: grafana/grafana
+
+
+
+- op: replace 
+  path: /spec/template/spec/volumes
+  value:
+    - name: grafana-storage
+      persistentVolumeClaim:
+        claimName: grafana-pvc
+    - name: grafana-datasources
+      configMap:
+        name: grafana-datasources
+    - name: grafana-config
+      configMap:
+        name: grafana-config
+
+- op: replace
+  path: /spec/replicas
+  value: 1
+
+- op: add
+  path: /spec/template/spec/restartPolicy
+  value: Always
+
+- op: replace
+  path: /spec/selector/matchLabels
+  value:
+    component: grafana  
+
+- op: replace
+  path: /spec/template/metadata/labels
+  value:
+    component: grafana  
+
