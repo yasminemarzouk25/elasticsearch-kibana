@@ -16,8 +16,26 @@ spec:
     spec:
       containers:
         - name: kibana
-          image: < REGISTRY / IMAGE >
+          image: <REGISTRY/IMAGE>  # Replace with your actual image
           ports:
             - containerPort: 5601
-          
-         
+              name: http
+              protocol: TCP
+          env:
+            - name: ELASTICSEARCH_URL
+              value: http://elasticsearch:9200
+            - name: XPACK_SECURITY_ENABLED
+              value: "true"
+            - name: ELASTICSEARCH_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: kibana-config
+                  key: elasticsearch_username
+            - name: ELASTICSEARCH_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: kibana-config
+                  key: elasticsearch_password
+          envFrom:
+            - configMapRef:
+                name: kibana-config
