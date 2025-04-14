@@ -1,0 +1,34 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+  
+namespace: demo-elastic
+
+
+resources:
+- ../../base
+
+
+patches:
+
+- path: ./patches/deployment-patch.yaml
+  target:
+    kind: StatefulSet
+    name: elasticsearch
+    version: v1
+
+- path: ./patches/service-patch.yaml
+  target:
+    kind: Service
+    name: elasticsearch
+    version: v1
+
+
+- path: ./patches/resource-quota-patch.yaml
+  target:
+    kind: ResourceQuota
+    name: elasticsearch
+    version: v1
+
+images:
+- name: docker.elastic.co/elasticsearch/elasticsearch
+  newTag: 7.12.0

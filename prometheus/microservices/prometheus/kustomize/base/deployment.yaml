@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: < REGISTRY / IMAGE >
+          ports:
+            - containerPort: 9090
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: < volume name >
+              mountPath: /etc/prometheus/
+            - name: < volume name >
+              mountPath: /prometheus/
+      volumes:
+        - name: < volume name >
+          configMap:
+            defaultMode: 420
+            name: prometheus-server-conf
+  
+        - name: <volume name >
+          emptyDir: {}

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: elasticsearch 
+  namespace: demo-elastic
+spec:
+  hard:
+    requests.cpu: < VALUE >
+    requests.memory: < VALUE >
+    limits.cpu: < VALUE >
+    limits.memory: < VALUE >

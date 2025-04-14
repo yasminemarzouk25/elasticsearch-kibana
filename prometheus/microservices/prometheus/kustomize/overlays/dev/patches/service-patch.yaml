@@ -1,0 +1,8 @@
+
+- op: replace 
+  path: /metadata/labels/component
+  value: prometheus
+
+- op: replace 
+  path: /spec/selector/component
+  value: prometheus

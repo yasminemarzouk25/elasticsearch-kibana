@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-running.teams: ArgoCD
+    notifications.argoproj.io/subscribe.on-deployed.teams: ArgoCD
+    notifications.argoproj.io/subscribe.on-health-degraded: ArgoCD
+  name: kibana
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: kibana
+    server: {{ .Values.spec.destination.server }}
+  project: kibana
+  source:
+    repoURL: {{ .Values.spec.source.repoURL }}
+    path: elasticsearch/microservices/kibana/kustomize/overlays/dev
+    targetRevision: {{ .Values.spec.source.targetRevision }}

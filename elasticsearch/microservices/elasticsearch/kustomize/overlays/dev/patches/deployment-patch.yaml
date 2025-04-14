@@ -1,0 +1,63 @@
+
+- op: add
+  path: /spec/template/spec/containers/0/resources
+  value:
+    requests:
+      cpu: "500m"
+      memory: "4Gi"
+    limits:
+      cpu: "500m"
+      memory: "4Gi"
+
+- op: replace
+  path: /spec/template/spec/containers/0/image
+  value: docker.elastic.co/elasticsearch/elasticsearch:7.12.0
+
+- op: add
+  path: /spec/template/spec/containers/0/env
+  value:
+    - name: discovery.type
+      value: single-node
+
+- op: replace
+  path: /spec/template/spec/volumes
+  value:
+    - name: elasticsearch-config
+      configMap:
+        name: elasticsearch-config
+    - name: elasticsearch-data
+      persistentVolumeClaim:
+        claimName: elasticsearch-pvc
+
+- op: replace
+  path: /spec/replicas
+  value: 1
+
+
+- op: add
+  path: /spec/template/spec/securityContext
+  value:
+    fsGroup: 1000
+
+- op: add
+  path: /spec/template/spec/restartPolicy
+  value: Always
+
+- op: replace
+  path: /spec/selector/matchLabels
+  value:
+    component: elasticsearch
+
+- op: replace
+  path: /spec/template/metadata/labels
+  value:
+    component: elasticsearch
+
+- op: add
+  path: /spec/template/spec/securityContext
+  value:
+    fsGroup: 1000
+
+- op: add
+  path: /spec/template/spec/restartPolicy
+  value: Always
