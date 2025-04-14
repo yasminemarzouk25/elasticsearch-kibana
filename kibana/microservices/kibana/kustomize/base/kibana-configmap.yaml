@@ -5,5 +5,5 @@ metadata:
   labels:
     component: kibana
 data:
-  elasticsearch_username: elastic
-  elasticsearch_password: yasmine25
+  elasticsearch.username: elastic
+  elasticsearch.password: yasmine25
