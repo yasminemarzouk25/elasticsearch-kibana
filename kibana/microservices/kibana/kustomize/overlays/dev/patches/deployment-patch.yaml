@@ -13,12 +13,12 @@
       valueFrom:
         configMapKeyRef:
           name: kibana-config
-          key: elasticsearch.username
+          key: elasticsearch_username
     - name: ELASTICSEARCH_PASSWORD
       valueFrom:
         configMapKeyRef:
           name: kibana-config
-          key: elasticsearch.password
+          key: elasticsearch_password
 - op: add
   path: /spec/template/spec/containers/0/envFrom
   value:
