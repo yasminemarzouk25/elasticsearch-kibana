@@ -16,5 +16,5 @@ spec:
   project: kibana
   source:
     repoURL: {{ .Values.spec.source.repoURL }}
-    path: elasticsearch/microservices/kibana/kustomize/overlays/dev
+    path: kibana/microservices/kibana/kustomize/overlays/dev
     targetRevision: {{ .Values.spec.source.targetRevision }}
