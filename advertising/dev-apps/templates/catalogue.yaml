@@ -11,7 +11,7 @@ metadata:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: advertise
+    namespace: catalogue
     server: {{ .Values.spec.destination.server }}
   project: adevertising
   source:
