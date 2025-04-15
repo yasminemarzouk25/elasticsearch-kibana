@@ -1,0 +1,29 @@
+- op: add
+  path: /spec/template/spec/containers/0/envFrom
+  value:
+    - configMapRef:
+        name: mysql-configmap
+ 
+- op: add
+  path: /spec/template/spec/containers/0/envFrom
+  value:
+    - secretRef:
+        name: mysql-secrets
+ 
+- op: add
+  path: /spec/template/spec/containers/0/resources
+  value:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+ 
+- op: add
+  path: /spec/revisionHistoryLimit
+  value: 2
+ 
+- op: replace
+  path: /spec/replicas
+  value: 1

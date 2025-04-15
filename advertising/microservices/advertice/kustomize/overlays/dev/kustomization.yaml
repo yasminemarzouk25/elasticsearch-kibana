@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: advertice
+
+resources:
+- ../../base
+
+
+patches:
+
+- path: ./patches/deployment-patch.yaml
+  target:
+    kind: Deployment
+    version: v1
+- path: ./patches/service-patch.yaml
+  target:
+    kind: Service
+    name: advertice
+    version: v1
+
+    
+images:
+- name: weaveworksdemos/carts
+  newTag: 0.4.8
+

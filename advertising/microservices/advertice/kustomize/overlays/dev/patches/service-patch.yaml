@@ -1,0 +1,8 @@
+
+- op: replace 
+  path: /metadata/labels/component
+  value: advertice
+
+- op: replace 
+  path: /spec/selector/component
+  value: advertice

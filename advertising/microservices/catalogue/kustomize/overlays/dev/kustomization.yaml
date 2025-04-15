@@ -1,0 +1,30 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: catalogue
+  
+resources:
+- ../../base
+- envs
+
+patches:
+- path: ./patches/deployment-patch.yaml
+  target:
+    kind: Deployment
+    name: catalogue
+    version: v1
+- path: ./patches/service-patch.yaml
+  target:
+    kind: Service
+    name: catalogue
+    version: v1
+- path: ./patches/mysql-patch.yaml
+  target:
+    kind: StatefulSet
+    name: catalogue-mysql
+    version: v1
+
+    
+images:
+- name: weaveworksdemos/catalogue
+  newTag: 0.3.5

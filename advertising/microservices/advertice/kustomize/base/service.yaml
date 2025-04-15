@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:  
+  name: advertice
+  labels:
+    component: < component name >
+spec: 
+  type: NodePort
+  ports: 
+  - name: http
+    port: 9555
+    protocol: TCP
+    targetPort: 9555
+  selector:
+    component: < component name >
+
+    
