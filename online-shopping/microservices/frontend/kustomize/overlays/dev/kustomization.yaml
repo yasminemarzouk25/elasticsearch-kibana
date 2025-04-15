@@ -1,8 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: advertice
-
+namespace: shopping-frontend
 resources:
 - ../../base
 
@@ -12,15 +11,17 @@ patches:
 - path: ./patches/deployment-patch.yaml
   target:
     kind: Deployment
+    name: frontend
     version: v1
+
 - path: ./patches/service-patch.yaml
   target:
     kind: Service
-    name: advertice
+    name: frontend
     version: v1
 
-    
 images:
-- name: weaveworksdemos/carts
-  newTag: 0.4.8
+- name: weaveworksdemos/front-end
+  newTag: 0.3.12
+
 

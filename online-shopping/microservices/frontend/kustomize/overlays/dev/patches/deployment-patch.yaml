@@ -1,7 +1,7 @@
 
 - op: replace
   path: /spec/template/spec/containers/0/image
-  value: "weaveworksdemos/carts"
+  value: "weaveworksdemos/front-end"
 
 - op: add 
   path: /spec/revisionHistoryLimit
@@ -11,8 +11,10 @@
   path: /spec/template/spec/containers/0/resources
   value:
     requests:
-      cpu: "200m"
-      memory: "256Mi"  
+      cpu: "8m"
+      memory: "225Mi"
     limits:
-      cpu: "500m"      
-      memory: "1000Mi" 
+      cpu: "16m"
+      memory: "450Mi"
+
+

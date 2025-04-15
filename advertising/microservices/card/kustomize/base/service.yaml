@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:  
-  name: advertice
+  name: card
   labels:
     component: < component name >
 spec: 
   type: NodePort
   ports: 
   - name: http
-    port: 9555
+    port: 10001
     protocol: TCP
-    targetPort: 9555
+    targetPort: 10001
   selector:
     component: < component name >
 

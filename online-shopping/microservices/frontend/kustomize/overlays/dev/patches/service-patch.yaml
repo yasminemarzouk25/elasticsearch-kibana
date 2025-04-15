@@ -1,8 +1,8 @@
 
 - op: replace 
   path: /metadata/labels/component
-  value: advertice
+  value: vote
 
 - op: replace 
   path: /spec/selector/component
-  value: advertice
+  value: vote

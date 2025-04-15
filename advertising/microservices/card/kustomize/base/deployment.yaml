@@ -1,23 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: adservice
+  name: card
   labels:
-    app: adservice
+    app: card
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: adservice
+      app: advertice
   template:
     metadata:
       labels:
-        app: adservice
+        app: advertice
     spec:
-      serviceAccountName: adservice
+      serviceAccountName: card
       containers:
       - name: server
         image: < REGISTRY / IMAGE >
+        env:
+         - name: JAVA_OPTS
+           value: -Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
         ports:
         - containerPort: 9555
         
