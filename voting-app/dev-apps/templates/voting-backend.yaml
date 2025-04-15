@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-running.teams: ArgoCD
+    notifications.argoproj.io/subscribe.on-deployed.teams: ArgoCD
+    notifications.argoproj.io/subscribe.on-health-degraded: ArgoCD
+  name: dev-voting-be
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: voting-be
+    server: {{ .Values.spec.destination.server }}
+  project: votting-app
+  source:
+    repoURL: {{ .Values.spec.source.repoURL }}
+    path: voting-app/microservices/result/kustomize/overlays/dev
+    targetRevision: {{ .Values.spec.source.targetRevision }}

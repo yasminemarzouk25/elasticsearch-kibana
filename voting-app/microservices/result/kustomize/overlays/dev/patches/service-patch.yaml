@@ -1,0 +1,7 @@
+- op: replace 
+  path: /metadata/labels/component
+  value: result
+
+- op: replace 
+  path: /spec/selector/component
+  value: result

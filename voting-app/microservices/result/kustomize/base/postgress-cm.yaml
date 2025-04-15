@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-initdb
+  labels:
+    app: postgres
+data:
+  init.sql: |
+    CREATE DATABASE result ;
+    CREATE USER result WITH PASSWORD 'yasmine2023' ;
+    GRANT ALL PRIVILEGES ON DATABASE result TO elarning ;
+    GRANT CREATE ON SCHEMA public TO result;
+    ALTER USER result WITH SUPERUSER;
+    CREATE DATABASE elearn;
+    CREATE USER elearn WITH PASSWORD 'yasmine';
+    GRANT ALL PRIVILEGES ON DATABASE elearn TO elarn ;
+    GRANT CREATE ON SCHEMA public TO elearn;
+    ALTER USER elearn WITH SUPERUSER;
+
