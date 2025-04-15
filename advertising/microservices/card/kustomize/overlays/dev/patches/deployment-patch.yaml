@@ -1,0 +1,18 @@
+
+- op: replace
+  path: /spec/template/spec/containers/0/image
+  value: "weaveworksdemos/carts"
+
+- op: add 
+  path: /spec/revisionHistoryLimit
+  value: 2  
+
+- op: add
+  path: /spec/template/spec/containers/0/resources
+  value:
+    requests:
+      cpu: "200m"
+      memory: "256Mi"  
+    limits:
+      cpu: "500m"      
+      memory: "1000Mi" 
