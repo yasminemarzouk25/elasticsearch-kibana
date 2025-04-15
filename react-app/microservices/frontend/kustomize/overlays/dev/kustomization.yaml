@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: react-app-fe
+resources:
+- ../../base
+
+
+
+patches:
+
+- path: ./patches/service-patch.yaml
+  target:
+    kind: Service
+    name: react-app
+    version: v1
+- path: ./patches/deployment-patch.yaml
+  target:
+    kind: Deployment
+    name: react-app-frontend
+    version: v1
+
+
+images:
+- name: yasminemarzouk/app-react-fe
+  newTag: latest123

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-app-frontend
+  labels:
+    app: react-app-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: react-app-frontend
+  template:
+    metadata:
+      labels:
+        app: react-app-frontend
+    spec:
+      containers:
+      - name: react-app-frontend
+        image: < REGISTRY / IMAGE >
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: Always
+        

@@ -1,0 +1,9 @@
+- op: replace 
+  path: /metadata/labels/component
+  value: react-app-frontend
+
+- op: replace 
+  path: /spec/selector/component
+  value: react-app-frontend
+
+

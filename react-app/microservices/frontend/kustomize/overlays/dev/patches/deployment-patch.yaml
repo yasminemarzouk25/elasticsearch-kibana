@@ -1,0 +1,11 @@
+
+- op: replace
+  path: /spec/template/spec/containers/0/image
+  value: "yasminemarzouk/app-react-fe"
+
+
+- op: add 
+  path: /spec/revisionHistoryLimit
+  value: 2  
+
+

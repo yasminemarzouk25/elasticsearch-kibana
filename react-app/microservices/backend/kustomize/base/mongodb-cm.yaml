@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-init-scripts
+  namespace: react-app
+data:
+  createdb.js: |
+    db = db.getSiblingDB('react_db');
+    db.createUser({
+      user: 'react_user',
+      pwd: 'react_user@123',
+      roles: [
+        { role: 'readWrite', db: 'react_db' },
+        { role: 'dbAdmin', db: 'react_db' }
+      ]
+    });
