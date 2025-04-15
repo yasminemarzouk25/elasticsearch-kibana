@@ -13,8 +13,8 @@ spec:
   destination:
     namespace: catalogue
     server: {{ .Values.spec.destination.server }}
-  project: adevertising
+  project: adeertising
   source:
     repoURL: {{ .Values.spec.source.repoURL }}
-    path: adevertising/microservices/catalogue/kustomize/overlays/dev
+    path: advertising/microservices/catalogue/kustomize/overlays/dev
     targetRevision: {{ .Values.spec.source.targetRevision }}

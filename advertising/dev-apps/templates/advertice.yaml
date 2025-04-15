@@ -13,8 +13,8 @@ spec:
   destination:
     namespace: advertise
     server: {{ .Values.spec.destination.server }}
-  project: adevertising
+  project: advertising
   source:
     repoURL: {{ .Values.spec.source.repoURL }}
-    path: adevertising/microservices/advertice/kustomize/overlays/dev
+    path: advertising/microservices/advertice/kustomize/overlays/dev
     targetRevision: {{ .Values.spec.source.targetRevision }}
