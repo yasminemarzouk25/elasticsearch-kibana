@@ -16,5 +16,5 @@ spec:
   project: votting-app
   source:
     repoURL: {{ .Values.spec.source.repoURL }}
-    path: voting-app/microservices/frontend/kustomize/overlays/dev
+    path: voting-app/microservices/vote/kustomize/overlays/dev
     targetRevision: {{ .Values.spec.source.targetRevision }}
