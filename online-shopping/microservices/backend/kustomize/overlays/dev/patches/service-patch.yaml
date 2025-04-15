@@ -1,0 +1,9 @@
+- op: replace 
+  path: /metadata/labels/component
+  value: backend
+
+- op: replace 
+  path: /spec/selector/component
+  value: backend
+
+
