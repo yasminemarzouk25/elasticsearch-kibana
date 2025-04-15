@@ -12,7 +12,7 @@
   value:
     requests:
       cpu: "200m"
-      memory: "180Mi"
+      memory: "256Mi"  
     limits:
-      cpu: "300m"
-      memory: "350Mi"
+      cpu: "500m"      
+      memory: "512Mi" 
