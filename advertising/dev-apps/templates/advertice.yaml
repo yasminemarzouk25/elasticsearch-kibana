@@ -5,7 +5,7 @@ metadata:
     notifications.argoproj.io/subscribe.on-sync-running.teams: ArgoCD
     notifications.argoproj.io/subscribe.on-deployed.teams: ArgoCD
     notifications.argoproj.io/subscribe.on-health-degraded: ArgoCD
-  name: dev-advertise
+  name: dev-advertice
   namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
