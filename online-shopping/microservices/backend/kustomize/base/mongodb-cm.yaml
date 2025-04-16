@@ -6,6 +6,7 @@ metadata:
     app: mongodb-init
 
 data:
+  kustomize.buildOptions: "--enable-helm --helm-command=helm"
   init.js: |
     db = db.getSiblingDB('react_db');
     db.createUser({
