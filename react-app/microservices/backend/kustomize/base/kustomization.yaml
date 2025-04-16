@@ -5,7 +5,7 @@ resources:
     - namespace.yaml
     - service.yaml
     - deployment.yaml
-    - mangodb-cm.yaml
+    - mongodb-cm.yaml
 
    
 
