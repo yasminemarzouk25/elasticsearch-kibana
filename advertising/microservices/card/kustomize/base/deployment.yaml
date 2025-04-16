@@ -8,20 +8,15 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: advertice
+      app: card
   template:
     metadata:
       labels:
-        app: advertice
+        app: card
     spec:
       serviceAccountName: card
       containers:
-      - name: server
-        image: < REGISTRY / IMAGE >
-        env:
-         - name: JAVA_OPTS
-           value: -Xms64m -Xmx128m -XX:+UseG1GC -Djava.security.egd=file:/dev/urandom -Dspring.zipkin.enabled=false
+      - name: carts
+        image: <REGISTRY/IMAGE>
         ports:
         - containerPort: 9555
-        
-       
