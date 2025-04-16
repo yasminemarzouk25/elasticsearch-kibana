@@ -6,11 +6,14 @@ namespace: shopping-be
 resources:
 - ../../base
 - envs
+
 helmCharts:
-- includeCRDs: true
-  name: mongodb
-  namespace: shopping-be
+- name: mongodb
+  repo: https://charts.bitnami.com/bitnami
+  version: 14.4.0
+  includeCRDs: true
   releaseName: mongodb
+  namespace: shopping-be
   valuesInline:
     architecture: standalone
     auth:
@@ -38,7 +41,6 @@ helmCharts:
 helmGlobals:
   chartHome: charts
 
-
 patches:
 - path: ./patches/deployment-patch.yaml
   target:
@@ -50,7 +52,6 @@ patches:
     kind: Service
     name: backend
     version: v1
-
 
 images:
 - name: weaveworksdemos/orders
