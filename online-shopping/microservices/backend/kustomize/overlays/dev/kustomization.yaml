@@ -6,7 +6,37 @@ namespace: shopping-be
 resources:
 - ../../base
 - envs
+helmCharts:
+- includeCRDs: true
+  name: mongodb
+  namespace: shopping-be
+  releaseName: mongodb
+  valuesInline:
+    architecture: standalone
+    auth:
+      enabled: true
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+    initdbScriptsConfigMap: shopping-init-scripts
+    persistence:
+      enabled: true
+      existingClaim: ""
+      size: 10Gi
+    podSecurityContext:
+      fsGroup: 1001
+      runAsUser: 1001
+    resources:
+      limits:
+        cpu: "1"
+        memory: 1Gi
+      requests:
+        cpu: 500m
+        memory: 512Mi
 
+helmGlobals:
+  chartHome: charts
 
 
 patches:
