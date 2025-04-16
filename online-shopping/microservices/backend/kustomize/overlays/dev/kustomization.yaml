@@ -8,12 +8,10 @@ resources:
 - envs
 
 helmCharts:
-- name: mongodb
-  repo: https://charts.bitnami.com/bitnami
-  version: 14.4.0
-  includeCRDs: true
-  releaseName: mongodb
+- includeCRDs: true
+  name: mongodb
   namespace: shopping-be
+  releaseName: mongodb
   valuesInline:
     architecture: standalone
     auth:
