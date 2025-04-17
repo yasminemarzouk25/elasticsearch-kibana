@@ -1,0 +1,25 @@
+- op: add
+  path: /spec/template/spec/containers/0/envFrom
+  value:
+    - configMapRef:
+        name: postgress-config
+    - secretRef:
+        name: postgress-secret
+
+- op: replace
+  path: /spec/template/spec/containers/0/resources
+  value:
+    requests:
+      cpu: "8m"
+      memory: "100Mi"      
+    limits:
+      cpu: "15m"
+      memory: "150Mi"      
+
+- op: add
+  path: /spec/revisionHistoryLimit
+  value: 5
+
+- op: replace
+  path: /spec/replicas
+  value: 1

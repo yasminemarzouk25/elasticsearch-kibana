@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-list-backend
+  labels:
+    app: todo-list-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: todo-list-backend
+  template:
+    metadata:
+      labels:
+        app: todo-list-backend
+    spec:
+      containers:
+        - name: todo-list-backend
+          image: < REGISTRY / IMAGE >
+          ports:
+            - containerPort: 5000
+          imagePullPolicy: Always
+          

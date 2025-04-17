@@ -1,0 +1,9 @@
+
+
+- op: replace 
+  path: /metadata/labels/component
+  value: todo-list-be
+
+- op: replace 
+  path: /spec/selector/component
+  value: todo-list-be

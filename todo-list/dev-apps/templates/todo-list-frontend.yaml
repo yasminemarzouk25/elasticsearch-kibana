@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-running.teams: ArgoCD
+    notifications.argoproj.io/subscribe.on-deployed.teams: ArgoCD
+    notifications.argoproj.io/subscribe.on-health-degraded: ArgoCD
+  name: dev-todo-list-fe
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: todo-list-fe
+    server: {{ .Values.spec.destination.server }}
+  project: todo-list
+  source:
+    repoURL: {{ .Values.spec.source.repoURL }}
+    path: todo-list/microservices/frontend/kustomize/overlays/dev
+    targetRevision: {{ .Values.spec.source.targetRevision }}
